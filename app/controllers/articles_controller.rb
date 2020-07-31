@@ -1,3 +1,4 @@
+require 'pry'
 class ArticlesController < ApplicationController
   def index
     @articles = Article.all
@@ -18,6 +19,23 @@ class ArticlesController < ApplicationController
     @article.save
     redirect_to article_path(@article)
   end
+  def edit
+    set_article
+  end
+
+  def update
+    set_article
+    @article.update(article_params)
+    redirect_to article_path(@article)
+  end
 
   # add edit and update methods here
+  private
+  def set_article
+    @article = Article.find_by_id(params[:id])
+  end
+
+  def article_params
+  params.require(:article).permit(:title, :description)
+  end
 end
